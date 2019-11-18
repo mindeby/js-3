@@ -46,14 +46,29 @@ $('#design').change(function(){
 
 
 //”Register for Activities” section
-
 let fieldset_activities$ = $("body").find("fieldset.activities");
-let activities = fieldset_activities$.find("label").children()
-//console.log(test2[0].name)
+let activities = fieldset_activities$.find("label").children();
+let events = [];
 
-$.each( activities, function( i, val ) { //check themes
-  let name = val.name;
-  //let date = val.data();
-  //let cost = val.cost;
-  //console.log("the activity " + name + " is on the " + date )
-})
+$.each( activities, function( i, val ) { //check activities
+  let activity = {
+    name: val.getAttribute("name"), //get name
+    date: val.getAttribute("data-day-and-time"), //get date
+    cost: val.getAttribute("data-cost"),  //get cost
+    isConficting: false,
+  }
+  events.push(activity)
+});
+
+$.each( events, function( i, val ) { //check activities
+  let regex = /(\w+)-T(\d{2}):(\d{2}):(\d{2})-T(\d{2}):(\d{2}):(\d{2})/;
+  let date = String(val.date)
+  let dayWeek = '$1' //get day of the week
+  let startTime = '$2' //get starting hour
+  let endTime = '$5' //get ending hour
+  val.day = date.replace(regex, dayWeek)
+  val.startTime = parseInt(date.replace(regex, startTime))
+  val.endTime = parseInt(date.replace(regex, endTime))
+});
+
+console.log(events)
