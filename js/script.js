@@ -6,6 +6,8 @@ $('#color').prepend(selectTheme)  //prepend it to the option list
 selectTheme.innerText = "Please select a T-shirt theme" //ask the user to select a design first
 selectTheme.selected = "selected" //set it to selected
 
+
+//”T-Shirt Info” section
 let themes = [
   {
     name: "js puns",
@@ -31,7 +33,7 @@ $('#design').change(function(){
   for (i=0; i < $('#color').children().length; i += 1 ) { //check all the options
     let option = $('#color').children()[i].value; //give me their values
     if (availableColors.indexOf(option) !== -1)  { //if the values are on the list of available colors
-      $('#color').children()[i].style.display = "block" //display that option on the color selector
+      $('#color').children()[i].style.display = "block" //display that option on the color selector dropdown
         availableOptions.push($('#color').children()[i]) //if there is a match add it to the availableOptions array
     }
   }
@@ -42,4 +44,16 @@ $('#design').change(function(){
   }
 });
 
-console.log($('#design')[0][1].value)
+
+//”Register for Activities” section
+
+let fieldset_activities$ = $("body").find("fieldset.activities");
+let activities = fieldset_activities$.find("label").children()
+//console.log(test2[0].name)
+
+$.each( activities, function( i, val ) { //check themes
+  let name = val.name;
+  //let date = val.data();
+  //let cost = val.cost;
+  //console.log("the activity " + name + " is on the " + date )
+})
