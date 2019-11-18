@@ -27,11 +27,19 @@ $('#design').change(function(){
       availableColors = themes[i].colors; //tell me which colors are available for that theme
     }
   })
-
+  let availableOptions = []; //create a list of available options
   for (i=0; i < $('#color').children().length; i += 1 ) { //check all the options
     let option = $('#color').children()[i].value; //give me their values
     if (availableColors.indexOf(option) !== -1)  { //if the values are on the list of available colors
       $('#color').children()[i].style.display = "block" //display that option on the color selector
+        availableOptions.push($('#color').children()[i]) //if there is a match add it to the availableOptions array
     }
   }
+  try {
+    availableOptions[0].selected = true; //set the first of the available options to selected
+  } catch (err) { //if there is an error (Example: user selected Select Theme )
+    $('#color').children()[0].selected = true; //set the selected for the first in the color options array
+  }
 });
+
+console.log($('#design')[0][1].value)
