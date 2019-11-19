@@ -55,7 +55,7 @@ $.each( activities, function( i, val ) { //check activities
     name: val.getAttribute("name"), //get name
     date: val.getAttribute("data-day-and-time"), //get date
     cost: val.getAttribute("data-cost"),  //get cost
-    isConficting: false,
+    isConflicting: false,
   }
   events.push(activity)
 });
@@ -76,14 +76,15 @@ console.log(events)
 function checkConflict(eventA,eventB) {
   if (eventA.day === eventB.day) { //if the activity is on the same day
     if (eventA.startTime >= eventB.startTime && eventA.startTime <= eventB.endTime  ) { //and starts at the same time
-      eventB.isConficting = true;
+      eventB.isConflicting = true;
+      eventA.conflict = eventB;
     }
   }
 }
 
 $('input:checkbox').change(function(event){
-  //if($(this).is(':checked')){
   let checkedBox = $(this)[0].name; //get me the name attribute of the checkbox that was checked or unchecked
+  if($(this).is(':checked')){
   $.each( events, function( i, val ) {
     if (checkedBox === val.name){ //if it matches the name of one of the events object
       let eventA = events[i] //give me the index and set it to EventA
@@ -95,10 +96,17 @@ $('input:checkbox').change(function(event){
       });
     }
   });
-  //}
+} else {
+  $.each( events, function( i, val ) {
+    if (checkedBox === val.name){ //if it matches the name of one of the events object
+      let eventA = events[i] //give me the index and set it to EventA
+      eventA.conflict.isConflicting = false;
+    }
+  });
+}
   $.each( events, function( i, val ) {
     let conflictingLabel = fieldset_activities$.find("label")[i];
-    if (val.isConficting) {
+    if (val.isConflicting) {
       activities[i].disabled = true; //disabled conflicting activities
       conflictingLabel.style.color="grey"
       conflictingLabel.style.textDecoration="line-through"
