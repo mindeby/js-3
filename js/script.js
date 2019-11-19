@@ -44,7 +44,6 @@ $('#design').change(function(){
   }
 });
 
-
 //”Register for Activities” section
 let fieldset_activities$ = $("body").find("fieldset.activities");
 let activities = fieldset_activities$.find("label").children();
@@ -61,14 +60,18 @@ $.each( activities, function( i, val ) { //check activities
 });
 
 $.each( events, function( i, val ) { //check activities
-  let regex = /(\w+)-T(\d{2}):(\d{2}):(\d{2})-T(\d{2}):(\d{2}):(\d{2})/;
+  let regexDate = /(\w+)-T(\d{2}):(\d{2}):(\d{2})-T(\d{2}):(\d{2}):(\d{2})/;
+  let regexCost = /(\$)(\d+)/;
   let date = String(val.date)
+  let cost = String(val.cost)
+  let costInt = '$2' //get number
   let dayWeek = '$1' //get day of the week
   let startTime = '$2' //get starting hour
   let endTime = '$5' //get ending hour
-  val.day = date.replace(regex, dayWeek)
-  val.startTime = parseInt(date.replace(regex, startTime))
-  val.endTime = parseInt(date.replace(regex, endTime))
+  val.day = date.replace(regexDate, dayWeek)
+  val.startTime = parseInt(date.replace(regexDate, startTime))
+  val.endTime = parseInt(date.replace(regexDate, endTime))
+  val.cost = parseInt(cost.replace(regexCost, costInt))
 });
 
 console.log(events)
@@ -82,16 +85,22 @@ function checkConflict(eventA,eventB) {
   }
 }
 
+const billingBox = document.createElement("SPAN"); //create a new span to insert bill total
+fieldset_activities$.append(billingBox)
+let totalBill = 0;
+
+
 $('input:checkbox').change(function(event){
   let checkedBox = $(this)[0].name; //get me the name attribute of the checkbox that was checked or unchecked
   if($(this).is(':checked')){
   $.each( events, function( i, val ) {
     if (checkedBox === val.name){ //if it matches the name of one of the events object
       let eventA = events[i] //give me the index and set it to EventA
+      totalBill += eventA.cost;
+      billingBox.innerText = "$ " + totalBill;
       $.each( events, function( i, val ) {
         if ( eventA.name !== val.name) { //If it's not the same event
           checkConflict(eventA, val) //check for scheduling conflicts
-          console.log('im checking for conflicts')
         }
       });
     }
@@ -100,7 +109,17 @@ $('input:checkbox').change(function(event){
   $.each( events, function( i, val ) {
     if (checkedBox === val.name){ //if it matches the name of one of the events object
       let eventA = events[i] //give me the index and set it to EventA
-      eventA.conflict.isConflicting = false;
+      totalBill -= eventA.cost;
+      if (totalBill !== 0) {
+        billingBox.innerText = "$ " + totalBill;
+      } else {
+        billingBox.innerText = ""
+      }
+      try {
+        eventA.conflict.isConflicting = false; //if there was a conflicting event set it's  isConflicting property to false
+      } catch (err) {
+        console.log("this event had no scheduling conflicts")
+      }
     }
   });
 }
@@ -117,3 +136,10 @@ $('input:checkbox').change(function(event){
     }
   });
 });
+
+
+//if (totalBill > 0) {
+//  billingBox.style.display = "block"
+//} else {
+//  billingBox.style.display = "none"
+//}
