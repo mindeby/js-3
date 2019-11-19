@@ -74,8 +74,6 @@ $.each( events, function( i, val ) { //check activities
   val.cost = parseInt(cost.replace(regexCost, costInt))
 });
 
-console.log(events)
-
 function checkConflict(eventA,eventB) {
   if (eventA.day === eventB.day) { //if the activity is on the same day
     if (eventA.startTime >= eventB.startTime && eventA.startTime <= eventB.endTime  ) { //and starts at the same time
@@ -137,9 +135,51 @@ $('input:checkbox').change(function(event){
   });
 });
 
+let paymentOption$ = $('#payment').children();
 
-//if (totalBill > 0) {
-//  billingBox.style.display = "block"
-//} else {
-//  billingBox.style.display = "none"
-//}
+$.each( paymentOption$, function( i, val ) {
+  if (val.value == "Credit Card") { //set credit card payment option to default
+  val.selected = true;
+  $('#paypal').hide()
+  $('#bitcoin').hide()
+  }
+  if (val.value == "select method") { //don't allow the 'select method' option to be chosen
+  val.disabled = true;
+  }
+});
+
+$('#payment').change(function(event){
+  $('#bitcoin').hide()
+  $('#credit-card').hide()
+  $('#paypal').hide()
+  switch (event.target.value) { //show the selected one and hide all the others
+    case "Credit Card":
+      $('#credit-card').show()
+      break;
+    case "PayPal":
+      $('#paypal').show()
+      break;
+    case "Bitcoin":
+      $('#bitcoin').show()
+      break;
+  }
+});
+
+//Form validation
+//Name field can't be blank
+
+
+
+$(':submit').click(function(event){
+  event.preventDefault()
+  let valid_user_name = /^[a-z ,.'-]+$/i.test($('#name').val()) //check if valid name
+  let valid_user_email = /^[^@]+@[^@.]+\.[a-z]+$/i.test($('#mail').val()) //check if valid email address
+  let valid_billing = (totalBill > 0); //if one or more checkboxes are selected the total billing will be > 0
+  if ($('#payment')[0].value == "Credit Card") {
+    let valid_number = /^[0-9]{13,16}$/.test($('#cc-num').val()) //number between 13 and 16 digits
+    let valid_zip = /^[0-9]{5}$/.test($('#zip').val()) //5 digit number
+    let valid_cvv = /^[0-9]{3}$/.test($('#cvv').val()) //3 digit number
+    let valid_cc = (valid_number && valid_zip && valid_cvv )
+    console.log(valid_cc)
+  }
+});
