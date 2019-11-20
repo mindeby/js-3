@@ -165,21 +165,61 @@ $('#payment').change(function(event){
   }
 });
 
-//Form validation
-//Name field can't be blank
+function redFlag(div,field){
+  let redMessage = document.createElement("SPAN");
+  redMessage.innerText = 'Please fill out the ' + field + ' field'
+  div[0].style.border = 'solid red 2px'
+  alertStyle(redMessage)
+  div.after(redMessage)
+}
 
-
+function alertStyle(element){
+  element.style.backgroundColor = '#EDC3C2';
+  element.style.color = "red"
+  element.style.display = "block"
+  element.style.padding = "10px"
+  element.style.marginTop = "-20px"
+  element.style.marginBottom = "10px"
+  element.classList.add('error_message');
+}
 
 $(':submit').click(function(event){
+  let currentErrorMessages = $( "body" ).find( ".error_message" )
+  currentErrorMessages.remove() //don't keep adding up elements with error messages
   event.preventDefault()
   let valid_user_name = /^[a-z ,.'-]+$/i.test($('#name').val()) //check if valid name
   let valid_user_email = /^[^@]+@[^@.]+\.[a-z]+$/i.test($('#mail').val()) //check if valid email address
   let valid_billing = (totalBill > 0); //if one or more checkboxes are selected the total billing will be > 0
+  let valid_cc = true;
   if ($('#payment')[0].value == "Credit Card") {
     let valid_number = /^[0-9]{13,16}$/.test($('#cc-num').val()) //number between 13 and 16 digits
     let valid_zip = /^[0-9]{5}$/.test($('#zip').val()) //5 digit number
     let valid_cvv = /^[0-9]{3}$/.test($('#cvv').val()) //3 digit number
-    let valid_cc = (valid_number && valid_zip && valid_cvv )
-    console.log(valid_cc)
+    valid_cc = (valid_number && valid_zip && valid_cvv )
+    if (!valid_number){
+      redFlag($('#cc-num'),'credit card number');
+    }
+    if (!valid_zip){
+      redFlag($('#zip'),'zip code');
+    }
+    if (!valid_cvv){
+      redFlag($('#cvv'),'cvv');
+    }
+  }
+  let passed = (valid_user_name && valid_user_email && valid_billing && valid_cc)
+  const requiredFields = [valid_user_name, valid_user_email, valid_billing, valid_cc]
+  if (!valid_user_name){
+    redFlag($('#name'),'name');
+  }
+  if (!valid_user_email){
+    redFlag($('#mail'),'email');
+  }
+  if (!valid_billing){
+    const errorBox = document.createElement("SPAN"); //create a new span to insert error message if needed
+    billingBox.append(errorBox)
+    errorBox.setAttribute('id', 'billing')
+    $('#billing')[0].style.display = "block"
+    $('#billing')[0].innerText = "Please select at least one activity"
+    alertStyle($('#billing')[0])
   }
 });
