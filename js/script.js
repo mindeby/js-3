@@ -177,9 +177,12 @@ $('#payment').change(function(event){
   }
 });
 
-function redFlag(div,field){
+function redFlag(div,field, additionalInfo){
   let redMessage = document.createElement("SPAN");
-  redMessage.innerText = 'Please fill out the ' + field + ' field'
+  redMessage.innerText = 'Please insert a valid ' + field
+  if (additionalInfo) {
+    redMessage.innerHTML += "</br>" + additionalInfo
+  }
   div[0].style.border = 'solid red 2px'
   alertStyle(redMessage)
   div.after(redMessage)
@@ -209,13 +212,13 @@ $(':submit').click(function(event){
     let valid_cvv = /^[0-9]{3}$/.test($('#cvv').val()) //3 digit number
     valid_cc = (valid_number && valid_zip && valid_cvv )
     if (!valid_number){
-      redFlag($('#cc-num'),'credit card number');
+      redFlag($('#cc-num'),'credit card number', `It should be between 13 and 16 digits and you inserted ${($('#cc-num').val().length)}`);
     }
     if (!valid_zip){
-      redFlag($('#zip'),'zip code');
+      redFlag($('#zip'),'zip code', `It should be 5 digits and you inserted ${($('#zip').val().length)}`);
     }
     if (!valid_cvv){
-      redFlag($('#cvv'),'cvv');
+      redFlag($('#cvv'),'cvv',`It should be 3 digits and you inserted ${($('#cvv').val().length)}`);
     }
   }
   let passed = (valid_user_name && valid_user_email && valid_billing && valid_cc)
