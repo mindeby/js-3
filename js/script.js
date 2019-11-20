@@ -183,26 +183,17 @@ function redFlag(div,field, additionalInfo){
   if (additionalInfo) {
     redMessage.innerHTML += "</br>" + additionalInfo
   }
-  div[0].style.border = 'solid red 2px'
-  alertStyle(redMessage)
+  div[0].classList.add('red_border');
+  redMessage.classList.add('error_message');
   div.after(redMessage)
 }
 
-function alertStyle(element){
-  element.style.backgroundColor = '#EDC3C2';
-  element.style.color = "red"
-  element.style.display = "block"
-  element.style.padding = "10px"
-  element.style.marginTop = "-20px"
-  element.style.marginBottom = "10px"
-  element.classList.add('error_message');
-}
 
 $(':submit').click(function(event){
-  let currentErrorMessages = $( "body" ).find( ".error_message" )
+  const currentErrorMessages = $( "body" ).find( ".error_message" )
   currentErrorMessages.remove() //don't keep adding up elements with error messages
   event.preventDefault()
-  let valid_user_name = /^[a-z ,.'-]+$/i.test($('#name').val()) //check if valid name
+  let valid_user_name = /^[a-z ,.'-]+$/i.test($('#name').val()) //check if valid name;
   let valid_user_email = /^[^@]+@[^@.]+\.[a-z]+$/i.test($('#mail').val()) //check if valid email address
   let valid_billing = (totalBill > 0); //if one or more checkboxes are selected the total billing will be > 0
   let valid_cc = true;
@@ -235,6 +226,33 @@ $(':submit').click(function(event){
     errorBox.setAttribute('id', 'billing')
     $('#billing')[0].style.display = "block"
     $('#billing')[0].innerText = "Please select at least one activity"
-    alertStyle($('#billing')[0])
+    $('#billing')[0].classList.add('error_message');
+  }
+});
+
+
+//Real time validation of name and email fields
+
+$('#name').keyup(function(event){
+  const currentErrorMessages = $( "body" ).find( ".error_message" )
+  currentErrorMessages.remove()
+  let name = /^[a-z ,.'-]+$/i.test($('#name').val()) //check if valid name
+  if (!name){
+    redFlag($('#name'),'name');
+  } else {
+    $('#name > span').removeClass( "error_message" );
+    $('#name').removeClass( "red_border");
+  }
+});
+
+$('#mail').keyup(function(event){
+  const currentErrorMessages = $( "body" ).find( ".error_message" )
+  currentErrorMessages.remove()
+  let email = /^[^@]+@[^@.]+\.[a-z]+$/i.test($('#mail').val()) //check if valid email address
+  if (!email){
+      redFlag($('#mail'),'email');
+  } else {
+    $('#mail > span').removeClass( "error_message" );
+    $('#mail').removeClass( "red_border");
   }
 });
