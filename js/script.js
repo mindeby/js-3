@@ -233,7 +233,7 @@ $(':submit').click(function(event){
 
 //Real time validation of name and email fields
 
-$('#name').keyup(function(event){
+$('#name').focusout(function(event){
   const currentErrorMessages = $( "body" ).find( ".error_message" )
   currentErrorMessages.remove()
   let name = /^[a-z ,.'-]+$/i.test($('#name').val()) //check if valid name
@@ -245,7 +245,7 @@ $('#name').keyup(function(event){
   }
 });
 
-$('#mail').keyup(function(event){
+$('#mail').focusout(function(event){
   const currentErrorMessages = $( "body" ).find( ".error_message" )
   currentErrorMessages.remove()
   let email = /^[^@]+@[^@.]+\.[a-z]+$/i.test($('#mail').val()) //check if valid email address
