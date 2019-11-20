@@ -9,9 +9,13 @@ selectTheme.selected = "selected" //set it to selected
 $('#title').change(function(){
   $('#other-title').hide();
   if ($('#title')[0].value === 'other') {
-    $('#other-title').show(); //show field to insert other job role
+    $('#other-title').show(); //show field to insert other job role when selected
   }
 });
+
+//Extra Credit - Hide the "Color" label and select menu until a T-Shirt design is selected from the "Design" menu.
+$('#color').hide()
+$('label[for="color"]').hide()
 
 //”T-Shirt Info” section
 let themes = [
@@ -28,6 +32,8 @@ let themes = [
 
 $('#design').change(function(){
   $('#color').children().hide();  //hide all options again
+  $('#color').show() //show color options and label
+  $('label[for="color"]').show()
   availableColors = [];
   let selectedDesign = $('#design').val(); //design the user chose
   $.each( themes, function( i, val ) { //check themes
@@ -51,8 +57,8 @@ $('#design').change(function(){
 });
 
 //”Register for Activities” section
-let fieldset_activities$ = $("body").find("fieldset.activities");
-let activities = fieldset_activities$.find("label").children();
+const fieldset_activities$ = $("body").find("fieldset.activities");
+const activities = fieldset_activities$.find("label").children();
 let events = [];
 
 $.each( activities, function( i, val ) { //check activities
@@ -141,7 +147,7 @@ $('input:checkbox').change(function(event){
   });
 });
 
-let paymentOption$ = $('#payment').children();
+const paymentOption$ = $('#payment').children();
 
 $.each( paymentOption$, function( i, val ) {
   if (val.value == "Credit Card") { //set credit card payment option to default
