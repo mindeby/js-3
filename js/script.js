@@ -6,6 +6,12 @@ $('#color').prepend(selectTheme)  //prepend it to the option list
 selectTheme.innerText = "Please select a T-shirt theme" //ask the user to select a design first
 selectTheme.selected = "selected" //set it to selected
 
+$('#title').change(function(){
+  $('#other-title').hide();
+  if ($('#title')[0].value === 'other') {
+    $('#other-title').show(); //show field to insert other job role
+  }
+});
 
 //”T-Shirt Info” section
 let themes = [
