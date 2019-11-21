@@ -17,7 +17,8 @@ button {
 body {
   font: 1em/1.5;
   color: rgba(6, 49, 68, 0.9);
-	background: #CDE0FB;
+  background: rgb(238,174,202);
+  background: linear-gradient(45deg, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
 }
 
 header {
@@ -43,6 +44,12 @@ form {
 	background: #9BBEEF;
 	border: 2px solid rgba(8, 63, 87, 0.7);
 	border-radius: 3px;
+  margin-bottom: 50px;
+}
+
+label + span {
+  color: black;
+  background-color: white;
 }
 
 fieldset,
@@ -97,7 +104,7 @@ input {
 
 input:focus {
 	background: #fff;
-	/*border-color: #5e97b0;*/
+	border-color: #5e97b0;
 	transition: border-color .4s, background-color .4s;
 }
 
