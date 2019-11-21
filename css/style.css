@@ -16,7 +16,7 @@ button {
 
 body {
   font: 1em/1.5;
-  color: rgba(6, 49, 68, 0.9);
+  color: rgba(6, 49, 68, 0.8);
   background: rgb(238,174,202);
   background: linear-gradient(45deg, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
 }
@@ -41,7 +41,7 @@ a {
 
 form {
 	padding: .875em 1.875em 1.875em;
-	background: #9BBEEF;
+	background: white;
 	border: 2px solid rgba(8, 63, 87, 0.7);
 	border-radius: 3px;
   margin-bottom: 50px;
@@ -49,7 +49,6 @@ form {
 
 label + span {
   color: black;
-  background-color: white;
 }
 
 fieldset,
@@ -96,15 +95,14 @@ input {
 	font-size: 1em;
 	font-weight: 500;
 	padding: .8em;
-	background: #e9f6fb;
-	border: 2px solid #6F9DDC;
+	border: 2px solid #758C99;
 	border-radius: 3px;
 	outline: none;
 }
 
 input:focus {
-	background: #fff;
-	border-color: #5e97b0;
+	background: #e9f6fb;
+	border-color: #586671;
 	transition: border-color .4s, background-color .4s;
 }
 

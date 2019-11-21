@@ -148,6 +148,7 @@ $('input:checkbox').change(function(event){
 });
 
 const paymentOption$ = $('#payment').children();
+let need_valid_cc = true; //because the default option is credit card
 
 $.each( paymentOption$, function( i, val ) {
   if (val.value == "Credit Card") { //set credit card payment option to default
@@ -167,12 +168,15 @@ $('#payment').change(function(event){
   switch (event.target.value) { //show the selected one and hide all the others
     case "Credit Card":
       $('#credit-card').show()
+      need_valid_cc = true;
       break;
     case "PayPal":
       $('#paypal').show()
+      need_valid_cc = false;
       break;
     case "Bitcoin":
       $('#bitcoin').show()
+      need_valid_cc = false;
       break;
   }
 });
@@ -187,16 +191,20 @@ function redFlag(div,field, additionalInfo){
   redMessage.classList.add('error_message');
   div.after(redMessage)
 }
-
+console.log($('#payment')[0].value)
 
 $(':submit').click(function(event){
+  event.preventDefault() //don't want the form to refresh on submit
   const currentErrorMessages = $( "body" ).find( ".error_message" )
-  currentErrorMessages.remove() //don't keep adding up elements with error messages
-  event.preventDefault()
+  currentErrorMessages.remove() //don't keep adding up elements with error messages, delete previous ones
   let valid_user_name = /^[a-z ,.'-]+$/i.test($('#name').val()) //check if valid name;
   let valid_user_email = /^[^@]+@[^@.]+\.[a-z]+$/i.test($('#mail').val()) //check if valid email address
   let valid_billing = (totalBill > 0); //if one or more checkboxes are selected the total billing will be > 0
-  let valid_cc = true;
+  if (!need_valid_cc){
+    let valid_cc = true;
+  } else {
+    let valid_cc = false;
+  }
   if ($('#payment')[0].value == "Credit Card") {
     let valid_number = /^[0-9]{13,16}$/.test($('#cc-num').val()) //number between 13 and 16 digits
     let valid_zip = /^[0-9]{5}$/.test($('#zip').val()) //5 digit number
@@ -213,7 +221,6 @@ $(':submit').click(function(event){
     }
   }
   let passed = (valid_user_name && valid_user_email && valid_billing && valid_cc)
-  const requiredFields = [valid_user_name, valid_user_email, valid_billing, valid_cc]
   if (!valid_user_name){
     redFlag($('#name'),'name');
   }
@@ -227,12 +234,12 @@ $(':submit').click(function(event){
     $('#billing')[0].style.display = "block"
     $('#billing')[0].innerText = "Please select at least one activity"
     $('#billing')[0].classList.add('error_message');
-  } else {
+  }
+  if (passed){
     alert('Your form was successfully submited')
     location.reload();
   }
 });
-
 
 //Real time validation of name and email fields
 
