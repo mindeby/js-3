@@ -227,6 +227,9 @@ $(':submit').click(function(event){
     $('#billing')[0].style.display = "block"
     $('#billing')[0].innerText = "Please select at least one activity"
     $('#billing')[0].classList.add('error_message');
+  } else {
+    alert('Your form was successfully submited')
+    location.reload();
   }
 });
 
