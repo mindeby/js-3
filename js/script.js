@@ -18,7 +18,7 @@ $('#color').hide()
 $('label[for="color"]').hide()
 
 //”T-Shirt Info” section
-let themes = [
+const themes = [
   {
     name: "js puns",
     colors: ["cornflowerblue", "darkslategrey", "gold"]
@@ -72,10 +72,10 @@ $.each( activities, function( i, val ) { //check activities
 });
 
 $.each( events, function( i, val ) { //check activities
-  let regexDate = /(\w+)-T(\d{2}):(\d{2}):(\d{2})-T(\d{2}):(\d{2}):(\d{2})/;
-  let regexCost = /(\$)(\d+)/;
-  let date = String(val.date)
-  let cost = String(val.cost)
+  const regexDate = /(\w+)-T(\d{2}):(\d{2}):(\d{2})-T(\d{2}):(\d{2}):(\d{2})/;
+  const regexCost = /(\$)(\d+)/;
+  const date = String(val.date)
+  const cost = String(val.cost)
   let costInt = '$2' //get number
   let dayWeek = '$1' //get day of the week
   let startTime = '$2' //get starting hour
@@ -182,7 +182,7 @@ $('#payment').change(function(event){
 });
 
 function redFlag(div,field, additionalInfo){
-  let redMessage = document.createElement("SPAN");
+  const redMessage = document.createElement("SPAN");
   redMessage.innerText = 'Please insert a valid ' + field
   if (additionalInfo) {
     redMessage.innerHTML += "</br>" + additionalInfo
