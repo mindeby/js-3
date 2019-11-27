@@ -219,6 +219,8 @@ $(':submit').click(function(event){
     if (!valid_cvv){
       redFlag($('#cvv'),'cvv',`It should be 3 digits and you inserted ${($('#cvv').val().length)}`);
     }
+  } else {
+    valid_cc = true; //fix issue where form was not submitted if paypal or bitcoin was selected
   }
   let passed = (valid_user_name && valid_user_email && valid_billing && valid_cc)
   if (!valid_user_name){
